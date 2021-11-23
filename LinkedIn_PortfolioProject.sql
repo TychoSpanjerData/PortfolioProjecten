@@ -11,11 +11,11 @@ FROM LinkedIn_Bezorging
 SELECT * 
 FROM LinkedIn_Prestaties
 
--- Totale uitgaven en gemiddlede uitgaven per campagne op LinkedIn 
+--Totale uitgaven en gemiddlede uitgaven per campagne op LinkedIn 
 SELECT SUM([Total Spent]) AS [Totale uitgaven LinkedIn], AVG([Total Spent]) AS [Gemiddelde uitgaven LinkedIn campagne], SUM([Impressions]) AS [Totale weergaven], AVG([Impressions])AS [Gemiddelde weergaven]
 FROM LinkedIn_Prestaties
 
--- Beste CTR i.c.m. weergaven en kosten
+--Beste CTR i.c.m. weergaven en kosten
 SELECT [Campaign ID], [Ad ID], [Click Through Rate] * 100 AS [CTR percentage], Impressions, [Total Spent]
 FROM LinkedIn_Prestaties
 WHERE [Click Through Rate] > 0
