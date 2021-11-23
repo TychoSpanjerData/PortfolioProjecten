@@ -3,13 +3,13 @@ Corona data onderzoek
 Vaardigheden: joins, CTE, TEMP TABLE, filtring functions, aggregate functions, sorting/grouping functions, partition by, converting data types
 */
 
--- Corona doden sinds meting t/m 16-11-21
+--Corona doden sinds meting t/m 16-11-21
 SELECT *
 FROM CoronaSterfte
 WHERE continent IS NOT NULL
 ORDER BY 3,4
 
--- Corona vaccinaties sinds meting t/m 16-11-21
+--Corona vaccinaties sinds meting t/m 16-11-21
 SELECT *
 FROM CoronaVaccinaties
 WHERE continent IS NOT NULL
@@ -51,7 +51,7 @@ AND total_deaths IS NOT NULL
 GROUP BY continent, location, population
 ORDER BY [Sterfte percentage] DESC
 
--- Totaal aantal corona testen per land in Europa
+--Totaal aantal corona testen per land in Europa
 SELECT CS.continent, CS.location, CS.date, CS.population, CV.new_tests,
 SUM(CONVERT(int,CV.new_tests)) OVER (PARTITION BY CS.location ORDER BY CS.location) AS [Totaal aantal testen]
 FROM CoronaSterfte AS CS
@@ -61,7 +61,7 @@ JOIN CoronaVaccinaties AS CV
 WHERE CS.continent = 'Europe'
 ORDER BY 2,3
 
--- Totaal aantal vaccinaties per land in Europa
+--Totaal aantal vaccinaties per land in Europa
 SELECT DISTINCT CS.continent, CS.location, CS.population,
 SUM(CONVERT(int,CV.new_vaccinations)) OVER (PARTITION BY CS.location ORDER BY CS.location) AS [Totaal aantal vaccinaties]
 FROM CoronaSterfte AS CS
@@ -71,7 +71,7 @@ WHERE CS.continent = 'Europe'
 GROUP BY CS.continent, CS.location, CS.population,CS.location, CV.new_vaccinations
 ORDER BY 2
 
--- Het percentage gevaccineerde mensen per land in Europa (d.m.v. CTE)
+--Het percentage gevaccineerde mensen per land in Europa (d.m.v. CTE)
 WITH BevolkingVsVaccinaties (continent, location, population, [Totaal aantal vaccinaties])
 AS
 (
@@ -86,7 +86,7 @@ GROUP BY CS.continent, CS.location, CS.population,CS.location, CV.new_vaccinatio
 SELECT *,([Totaal aantal vaccinaties]/population)*100 AS [Percentage gevaccineerde]
 FROM BevolkingVsVaccinaties
 
--- Het percentage geteste mensen per land in Europa (d.m.v. TEMP TABLE)
+--Het percentage geteste mensen per land in Europa (d.m.v. TEMP TABLE)
 DROP TABLE IF EXISTS #PercentageGevaccineerde
 CREATE TABLE #PercentageGevaccineerde
 (
